@@ -31,6 +31,17 @@ const filename = (ext) => {
   return isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
 };
 
+const cssLoaders = () => [
+  {
+    loader: MiniCssExtractPlugin.loader,
+    options: {
+      hmr: isDev,
+      reloadAll: true,
+    },
+  },
+  "css-loader",
+];
+
 module.exports = {
   mode: "development",
   context: path.resolve(__dirname, "src"),
@@ -79,44 +90,15 @@ module.exports = {
       {
         test: /\.css$/,
         // use: ["style-loader", "css-loader"],
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: isDev,
-              reloadAll: true,
-            },
-          },
-          "css-loader",
-        ],
+        use: cssLoaders(),
       },
       {
         test: /\.less$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: isDev,
-              reloadAll: true,
-            },
-          },
-          "css-loader",
-          "less-loader",
-        ],
+        use: [...cssLoaders(), "less-loader"],
       },
       {
         test: /\.(sass|scss)$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: isDev,
-              reloadAll: true,
-            },
-          },
-          "css-loader",
-          "sass-loader",
-        ],
+        use: [...cssLoaders(), "sass-loader"],
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
