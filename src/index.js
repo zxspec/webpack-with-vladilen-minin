@@ -1,4 +1,5 @@
 import * as $ from "jquery";
+import "./babel";
 import Post from "./Post";
 import "./styles/styles.css";
 import "./styles/less.less";
