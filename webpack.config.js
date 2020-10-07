@@ -42,12 +42,28 @@ const cssLoaders = () => [
   "css-loader",
 ];
 
+const babelOptions = (extraPreset) => {
+  const result = {
+    loader: "babel-loader",
+    options: {
+      presets: ["@babel/preset-env"],
+      plugins: ["@babel/plugin-proposal-class-properties"],
+    },
+  };
+
+  if (extraPreset) {
+    result.options.presets.push(extraPreset);
+  }
+
+  return result;
+};
+
 module.exports = {
   mode: "development",
   context: path.resolve(__dirname, "src"),
   entry: {
     main: ["@babel/polyfill", "./index.js"],
-    analytics: "./analytics.js",
+    analytics: "./analytics.ts",
   },
   output: {
     filename: filename("js"),
@@ -111,13 +127,12 @@ module.exports = {
       {
         test: /\.m?js$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env"],
-            plugins: ["@babel/plugin-proposal-class-properties"],
-          },
-        },
+        use: babelOptions(),
+      },
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: babelOptions("@babel/preset-typescript"),
       },
     ],
   },
