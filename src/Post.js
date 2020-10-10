@@ -1,3 +1,5 @@
+const unused = "it should be caught by eslint!!";
+
 export default class Post {
   constructor(title, img) {
     this.title = title;
